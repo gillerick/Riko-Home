@@ -23,7 +23,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.SocketPermission;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Locale;
 import java.net.HttpURLConnection;
 
@@ -61,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                     txvResult.setText(result.get(0));
 
                     new HttpRequestTask(
-                            new HttpRequest("http://localhost/commands", HttpRequest.GET, "{ \"ID\": \"1\" }"),
+                            new HttpRequest("https://riko-266107.appspot.com/commands", HttpRequest.POST, "{ \"Text\": \"+txvResult+\" }"),
                             new HttpRequest.Handler() {
                                 @Override
                                 public void response(HttpResponse response) {
