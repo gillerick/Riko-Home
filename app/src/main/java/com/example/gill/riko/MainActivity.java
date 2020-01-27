@@ -1,33 +1,20 @@
 package com.example.gill.riko;
 
-//import android.os.Build;
-import android.Manifest;
 import android.speech.tts.TextToSpeech;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import java.util.Locale;
 import com.apptakk.http_request.HttpRequest;
 import com.apptakk.http_request.HttpRequestTask;
 import com.apptakk.http_request.HttpResponse;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.SocketPermission;
-import java.net.URL;
-import java.net.URLDecoder;
 import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Locale;
-import java.net.HttpURLConnection;
+
 
 public class MainActivity extends AppCompatActivity {
     private TextView txvResult;
@@ -52,8 +39,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
@@ -62,8 +51,9 @@ public class MainActivity extends AppCompatActivity {
                     ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     txvResult.setText(result.get(0));
 
+
                     new HttpRequestTask(
-                            new HttpRequest("https://riko-266107.appspot.com/commands", HttpRequest.POST, "{ \"Text\": \"+txvResult+\" }"),
+                            new HttpRequest("https://riko-266107.appspot.com/transcripts", HttpRequest.POST, "{ \"Text\": \"".concat(result.get(0)).concat("\"}")),
                             new HttpRequest.Handler() {
                                 @Override
                                 public void response(HttpResponse response) {
@@ -74,12 +64,30 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                 }
                             }).execute();
-
-                }
+               }
                 break;
         }
     }
-
-
-
 }
+
+
+//                    textToSpeech.speak(result.get(0), TextToSpeech.QUEUE_FLUSH, null, null);
+//
+//    TextToSpeech textToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+//        @Override
+//        public void onInit(int status) {
+//            if (status == TextToSpeech.SUCCESS) {
+//                int result = textToSpeech.setLanguage(Locale.ENGLISH);
+//                if (result == TextToSpeech.LANG_MISSING_DATA ||
+//                        result == TextToSpeech.LANG_NOT_SUPPORTED) {
+//                    Toast.makeText(getApplicationContext(), "This language is not supported!",
+//                            Toast.LENGTH_SHORT).show();
+//                } else {
+//                    textToSpeech.setPitch(0.6f);
+//                    textToSpeech.setSpeechRate(1.0f);
+//                }
+//            }
+//        }
+//    });
+
+
